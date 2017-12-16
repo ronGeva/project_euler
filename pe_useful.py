@@ -21,6 +21,37 @@ def binary_search(sorted_list, num):
 			floor_index = mid_index
 	return -1
 
+def fill_digit_dict(num, digit_dict):
+	"""
+	sets digit dict to contain the following data:
+	digit_dict[digit_key] = the amount of times this digit appears
+	in num.
+	digit dict must contain a key for each possible digit beforehand.
+	returns None.
+	"""
+	while num > 0:
+		try:
+			digit_dict[num % 10] += 1
+		except:
+			print digit_dict, num
+		num /= 10
+
+def is_permutation(num1, num2):
+	"""
+	:param num1: integer.
+	:param num2: integer.
+	returns True if num1 is a permutation of num2.
+	Complexity: 
+	"""
+	digit_dict1, digit_dict2 = {}, {}
+	for i in xrange(10):
+		digit_dict1[i], digit_dict2[i] = 0, 0
+	
+	fill_digit_dict(num1, digit_dict1)
+	fill_digit_dict(num2, digit_dict2)
+
+	return digit_dict1 == digit_dict2
+
 def get_all_primes(limit):
 	"""
 	all_numbers -> a boolean list, if True then the number is composite,
@@ -79,7 +110,7 @@ def phi(n, prime_dividers):
 	for prime_divider in prime_dividers:
 		num_of_strange_numbers *= (1 - 1.0 / prime_divider)
 
-	return int(num_of_strange_numbers)
+	return int(round(num_of_strange_numbers))
 
 def save_progress(args, process_name):
 	directory = os.getcwd()

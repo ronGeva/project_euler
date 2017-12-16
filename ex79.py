@@ -23,39 +23,58 @@ def set_starting_vars(tries, numbers_priority):
 
 	tries.pop(0)
 
+
+def is_correctly_relative(digit, other_digit, numbers_priority, next):
+	"""
+	next : True for next digit, False for previous digit
+	"""
+	if other_digit is None or not other_digit in numbers_priority:
+		return True
+
+	digit_index = numbers_priority.index(digit)
+	if(next):
+		for i in xrange(digit_index, len(numbers_priority)):
+			if numbers_priority[i] == other_digit:
+				return True
+	else:
+		for i in xrange(digit_index, -1, -1):
+			if numbers_priority[i] == other_digit:
+				return True
+
+	return False
+
 def is_condition_met(digit, t, numbers_priority):
 	index = t.index(digit)
 	prev_digit = get_previous(t, index)
 	next_digit = get_next(t, index)
-	prev_flag, next_flag = True, True
+
+	return is_correctly_relative(digit, next_digit, numbers_priority, True) and \
+	is_correctly_relative(digit, prev_digit, numbers_priority, False)
+
+def fix_location(digit, t, numbers_priority):
+	if digit in numbers_priority:
+		if is_condition_met(digit, t, numbers_priority):
+			return
+		numbers_priority.remove(digit)
+	for index in xrange(0, len(numbers_priority)):
+		numbers_priority.insert(index, digit)
+		if is_condition_met(digit, t, numbers_priority):
+			return
+		numbers_priority.remove(digit)
 	
 
 def guess_shortest_code(tries, numbers_priority):
 	for t in tries:
 		for index in xrange(3):
 			digit = t[index]
-			next_digit = get_next(t, index)
-			prev_digit = get_previous(t, index)
-
-			if not next_digit is None and next_digit in numbers_priority:
-				if digit in numbers_priority:
-					numbers_priority.remove(digit)
-				next_digit_index = numbers_priority.index(next_digit)
-				numbers_priority.insert(next_digit_index, digit)
-
-			elif not prev_digit is None and prev_digit in numbers_priority:
-				if digit in numbers_priority:
-					numbers_priority.remove(digit)
-				prev_digit_index = numbers_priority.index(prev_digit)
-				numbers_priority.insert(prev_digit_index + 1, digit)
-
+			fix_location(digit, t, numbers_priority)
 	return numbers_priority
 
 def test():
 	tries = get_tries()
 	numbers_priority = []
 	set_starting_vars(tries, numbers_priority)
-	for i in xrange(10):
+	for i in xrange(3):
 		numbers_priority = guess_shortest_code(tries, numbers_priority)
 	print numbers_priority
 
