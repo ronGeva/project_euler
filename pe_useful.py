@@ -79,7 +79,7 @@ def phi(n, prime_dividers):
 	for prime_divider in prime_dividers:
 		num_of_strange_numbers *= (1 - 1.0 / prime_divider)
 
-	return int(num_of_strange_numbers)
+	return int(round(num_of_strange_numbers))
 
 def save_progress(args, process_name):
 	directory = os.getcwd()
@@ -106,6 +106,13 @@ def load_progress(process_name):
 
 	return args
 
+def get_all_squares(limit):
+	"""
+	:param limit: an integer representing the highest number to have its
+	square in the returned list.
+	returns a list of all squares from 0 to limit.
+	"""
+	return [pow(num, 2) for num in xrange(limit + 1)]
 
 def test_func(func):
 	def new_func():

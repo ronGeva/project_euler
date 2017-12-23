@@ -49,7 +49,7 @@ def find_max_totient_permutation(limit):
 	for num in bar(xrange(min_ratio_num, limit)):
 		prime_dividers = get_all_prime_dividers(num, primes)
 		phi_n = phi(num, prime_dividers)
-		if is_permutation(num, phi_n) and num / phi_n < min_ratio:
+		if is_permutation(num, phi_n) and num / float(phi_n) < min_ratio:
 			min_ratio = num / float(phi_n)
 			min_ratio_num = num
 
@@ -59,7 +59,7 @@ def find_max_totient_permutation(limit):
 def main():
 	start_time = time.time()
 	print "searching for the max num/phi(num) where phi(num) is a permutation of num..."
-	print "Found it! num = {0}".format(find_max_totient_permutation(1000000))
+	print "Found it! num = {0}".format(find_max_totient_permutation(10000000))
 	print "time passed : {0} seconds".format(time.time() - start_time)
 
 def test():
