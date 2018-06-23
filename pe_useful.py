@@ -145,6 +145,20 @@ def get_all_squares(limit):
 	"""
 	return [pow(num, 2) for num in xrange(limit + 1)]
 
+def get_gcd(n, d):
+	"""
+	Returns the greatest common divisor of two natural numbers : n and d
+	:return:the divisor
+	"""
+	dividend = d
+	divisor = n
+	remainder = dividend % divisor
+	while remainder != 0:
+		dividend = divisor
+		divisor = remainder
+		remainder = dividend % divisor
+	return divisor
+
 def test_func(func):
 	def new_func():
 		starting_time = time.time()

@@ -100,7 +100,7 @@ def calculate_value(numbers, priority, operators):
 
 	if int(values[0]) != values[0]:
 		return None
-	
+
 	return int(values[0])
 
 
