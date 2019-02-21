@@ -52,14 +52,17 @@ def is_permutation(num1, num2):
 
 	return digit_dict1 == digit_dict2
 
-def get_all_primes(limit):
+def get_all_primes(limit, with_one=True):
 	"""
 	all_numbers -> a boolean list, if True then the number is composite,
 	otherwise it is false.
 
 	Complexity: O(n)
 	"""
-	primes = [1]
+	if with_one:
+		primes = [1]
+	else:
+		primes = []
 	all_numbers = []
 	for i in xrange(limit):
 		all_numbers.append(False)
