@@ -58,11 +58,7 @@ def find_max_totient_permutation(limit):
 
 def main():
 	start_time = time.time()
-<<<<<<< HEAD
-	print "searching for the max num/phi(num) where phi(num) is a permutation of num..."
-=======
 	print "searching for the min num/phi(num) where phi(num) is a permutation of num..."
->>>>>>> d794fc5320c665a4c48f27def5ed8a02798d0af6
 	print "Found it! num = {0}".format(find_max_totient_permutation(10000000))
 	print "time passed : {0} seconds".format(time.time() - start_time)
 
@@ -70,6 +66,7 @@ def test():
 	print is_permutation(87109, 79180)
 	print is_permutation(1132, 2311)
 	print is_permutation(10101, 10100)
+
 
 if __name__ == '__main__':
 	main()

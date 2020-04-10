@@ -3,5 +3,10 @@
     <Python>
       <option name="BLANK_LINES_AROUND_TOP_LEVEL_CLASSES_FUNCTIONS" value="1" />
     </Python>
+    <codeStyleSettings language="Python">
+      <indentOptions>
+        <option name="USE_TAB_CHARACTER" value="true" />
+      </indentOptions>
+    </codeStyleSettings>
   </code_scheme>
 </component>
