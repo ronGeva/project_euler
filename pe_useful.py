@@ -193,5 +193,22 @@ def test_save_and_load():
 	save_progress([l, d, x], 'test')
 	print load_progress('test')
 
+def load_matrix_from_file(filepath):
+	"""
+	Returns a matrix containing values written in a file which resides in the filepath sent as an argument.
+	The file is expected to contains rows in the matrix seperated by a newline, and each row containing values separated
+	by ','. The values are expected to be integers.
+	"""
+	with open(filepath, 'rb') as f:
+		data = f.read()
+
+	table = []
+	for line in data.split("\n"):
+		if line != '':
+			line = [int(num) for num in line.split(",")]
+			table.append(line)
+
+	return table
+
 if __name__ == '__main__':
 	test_phi()
