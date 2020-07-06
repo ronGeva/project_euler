@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-DATA_PATH = "C:\Users\Geva\Desktop\Ron\code\pe\ex82_input.txt"
+DATA_PATH = "ex82_input.txt"
 
 
 class Matrix(object):
