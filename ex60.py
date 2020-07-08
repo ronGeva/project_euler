@@ -1,16 +1,12 @@
 import math
+from pe_useful import is_prime, binary_search
 
-SUBSET_SIZE = 5
+#SUBSET_SIZE = 5
+SUBSET_SIZE = 4
 
 min_sum = 99999999999
 min_five = []
 
-def is_prime(num):
-	biggest_divider = int(math.sqrt(num)) + 1
-	for i in xrange(2, biggest_divider):
-		if num % i == 0:
-			return False
-	return True
 
 def get_all_primes(limit):
 	primes = []
@@ -33,15 +29,21 @@ def get_all_subsets(numbers, set_size):
 
 	return subsets
 
-def is_prime_pair(prime1, prime2):
-	return is_prime(int(str(prime1) + str(prime2))) and is_prime(int(str(prime2) + str(prime1)))
+
+def is_prime_pair(prime1, prime2, all_primes):
+	possible_prime_1 = int(str(prime1) + str(prime2))
+	possible_prime_2 = int(str(prime2) + str(prime1))
+	return binary_search(all_primes, possible_prime_1) != -1 and binary_search(all_primes, possible_prime_2) != -1
+
 
 def get_plpl(limit):
 	primes = get_all_primes(limit)
+	from math import log
+	all_primes = get_all_primes(pow(limit, 2))
 	plpl_dict = {}
 	for prime1 in primes:
 		for prime2 in primes:
-			if is_prime_pair(prime1, prime2):
+			if is_prime_pair(prime1, prime2, all_primes):
 				if prime1 in plpl_dict.keys():
 					plpl_dict[prime1].append(prime2)
 				else:
