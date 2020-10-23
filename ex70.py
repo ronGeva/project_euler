@@ -1,72 +1,39 @@
-import time
+from pe_useful import is_permutation, phi
 import progressbar
-import os
-import signal
-import sys
-
-from math import sqrt
-from pe_useful import binary_search, phi, get_all_primes, get_all_prime_dividers,\
- test_func, save_progress, load_progress
 
 
-def fill_digit_dict(num, digit_dict):
-	while num > 0:
-		try:
-			digit_dict[num % 10] += 1
-		except:
-			print digit_dict, num
-		num /= 10
+def generate_dividing_primes_list(maximal_number):
+	"""
+	Returns a list representing the dividing primes for each number.
+	The index of each cell in the list represent the number itself while its value is the list of primes which divide
+	it.
+	:param maximal_number: The maximal number to look for, or the size of the returned list minus 1 (since the number 0
+	will technically be included in the list).
+	:return: The generated dividing primes list.
+	"""
+	print "Generating an empty list of {amount} cells...".format(amount=maximal_number + 1)
+	dividing_primes = [[] for num in xrange(maximal_number + 1)]
 
-def is_permutation(num1, num2):
-	digit_dict1, digit_dict2 = {}, {}
-	for i in xrange(10):
-		digit_dict1[i], digit_dict2[i] = 0, 0
-	
-	fill_digit_dict(num1, digit_dict1)
-	fill_digit_dict(num2, digit_dict2)
-
-	return digit_dict1 == digit_dict2
-
-def get_vars(limit):
-	args = load_progress('ex70')
-	if len(args) == 0:
-		return [999, 2, get_all_primes(limit)]
-
-	else:
-		return args
-
-def find_max_totient_permutation(limit):
-	min_ratio, min_ratio_num, primes = get_vars(limit)
-
-	def close_program(signal, frame):
-		args = [min_ratio, min_ratio_num, primes]
-		save_progress(args, 'ex70')
-		sys.exit(0)
-
-	signal.signal(signal.SIGINT, close_program)
-
-	bar = progressbar.ProgressBar()
-	for num in bar(xrange(min_ratio_num, limit)):
-		prime_dividers = get_all_prime_dividers(num, primes)
-		phi_n = phi(num, prime_dividers)
-		if is_permutation(num, phi_n) and num / float(phi_n) < min_ratio:
-			min_ratio = num / float(phi_n)
-			min_ratio_num = num
-
-	return min_ratio_num
+	print "Generating dividing primes list..."
+	for num in progressbar.progressbar(xrange(2, maximal_number + 1)):
+		if len(dividing_primes[num]) == 0:  # congratz, you're a prime
+			for curr_num in xrange(num, len(dividing_primes), num):
+				dividing_primes[curr_num].append(num)
+	return dividing_primes
 
 
 def main():
-	start_time = time.time()
-	print "searching for the min num/phi(num) where phi(num) is a permutation of num..."
-	print "Found it! num = {0}".format(find_max_totient_permutation(10000000))
-	print "time passed : {0} seconds".format(time.time() - start_time)
+	dividing_primes_list = generate_dividing_primes_list(pow(10, 7))
+	phi_minimum = (1, 0)  # This is the biggest minimum
+	print "Checking phi value and is permutation for each number..."
+	for num in progressbar.progressbar(xrange(2, len(dividing_primes_list))):
+		phi_value = phi(num, dividing_primes_list[num])
+		# num/phi_value < best_num/best_phi -> num * best_phi < best_num * phi_value
+		if num * phi_minimum[1] < phi_minimum[0] * phi_value and is_permutation(phi_value, num):
+			phi_minimum = (num, phi_value)
 
-def test():
-	print is_permutation(87109, 79180)
-	print is_permutation(1132, 2311)
-	print is_permutation(10101, 10100)
+	print "Minimal ratio goes to number {num}, with phi value: {phi}".format(num=phi_minimum[0], phi=phi_minimum[1])
+	print phi_minimum
 
 
-if __name__ == '__main__':
-	main()
+main()

@@ -43,14 +43,7 @@ def is_permutation(num1, num2):
 	returns True if num1 is a permutation of num2.
 	Complexity: 
 	"""
-	digit_dict1, digit_dict2 = {}, {}
-	for i in xrange(10):
-		digit_dict1[i], digit_dict2[i] = 0, 0
-	
-	fill_digit_dict(num1, digit_dict1)
-	fill_digit_dict(num2, digit_dict2)
-
-	return digit_dict1 == digit_dict2
+	return sorted(str(num1)) == sorted(str(num2))
 
 def get_all_primes(limit, with_one=True):
 	"""
@@ -104,16 +97,14 @@ def get_all_prime_dividers(num, primes):
 
 	return prime_dividers
 
-def phi(n, prime_dividers):
+def phi(num, prime_dividers):
 	"""
 	returns phi(n) using euler's totient function and its prime dividers.
 	Complexity: O(1)~ = O(len(prime_dividers))
 	"""
-	num_of_strange_numbers = n
-	for prime_divider in prime_dividers:
-		num_of_strange_numbers *= (1 - 1.0 / prime_divider)
-
-	return int(round(num_of_strange_numbers))
+	for prime in prime_dividers:
+		num *= (1 - 1 / float(prime))
+	return int(round(num))
 
 def save_progress(args, process_name):
 	directory = os.getcwd()
